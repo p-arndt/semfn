@@ -6,10 +6,9 @@ Turn ordinary typed Python functions into semantic, probabilistic functions.
 from typing import Literal
 
 import semfn
-from semfn import semantic
 
 
-@semantic
+@semfn.semantic
 def classify(text: str) -> Literal["bug", "feature", "question"]:
     """What kind of request is this?"""
 
@@ -35,12 +34,12 @@ validated when the function is decorated, and calls keep their parameter types.
 threshold means the same for every return type:
 
 ```python
-@semantic(min_confidence=0.8)  # raises UncertainDecision below 0.8
+@semfn.semantic(min_confidence=0.8)  # raises UncertainDecision below 0.8
 def is_blocking(text: str) -> bool:
     """Is the user unable to continue?"""
 
 
-@semantic(min_confidence=0.8, uncertain=None)  # typed as bool | None
+@semfn.semantic(min_confidence=0.8, uncertain=None)  # typed as bool | None
 def is_spam(text: str) -> bool:
     """Is this spam?"""
 ```
@@ -82,7 +81,7 @@ with semfn.using(FakeBackend()):
     assert await classify("Login loops") == "bug"
 ```
 
-`@semantic(backend=...)` pins a single function to its own backend.
+`@semfn.semantic(backend=...)` pins a single function to its own backend.
 
 ## Development
 
