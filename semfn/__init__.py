@@ -1,23 +1,20 @@
-from .core import (
-    Backend,
-    Decision,
-    Score,
-    SemanticRuntime,
-    UncertainDecision,
-    batch,
-    configure,
-    semantic,
-)
+from .decision import Decision, UncertainDecision
+from .function import SemanticCall, SemanticFunction, gather, semantic
 from .laya import LayaBackend
+from .runtime import Backend, SemanticRuntime, configure, using
+from .schema import Score
 
 __all__ = [
     "Backend",
     "Decision",
     "LayaBackend",
     "Score",
+    "SemanticCall",
+    "SemanticFunction",
     "SemanticRuntime",
     "UncertainDecision",
-    "batch",
     "configure",
+    "gather",
     "semantic",
+    "using",
 ]
