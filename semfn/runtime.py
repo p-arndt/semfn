@@ -60,14 +60,20 @@ _scoped_runtime: ContextVar[SemanticRuntime | None] = ContextVar(
 def configure(
     *,
     backend: str | Backend = "laya",
-    model: str = "convaiinnovations/laya-multilingual",
+    model: str | None = None,
     quiet: bool = True,
 ) -> SemanticRuntime:
     """Set the process-wide default backend."""
     if backend == "laya":
         from .laya import LayaBackend
 
-        backend = LayaBackend(model, quiet=quiet)
+        backend = LayaBackend(
+            model or "convaiinnovations/laya-multilingual", quiet=quiet
+        )
+    elif backend == "jev":
+        from .jev import JevBackend
+
+        backend = JevBackend(model or "jev-latest")
     elif isinstance(backend, str):
         raise ValueError(f"Unknown backend {backend!r}")
     _Defaults.runtime = SemanticRuntime(backend)

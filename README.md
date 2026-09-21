@@ -62,6 +62,22 @@ The default Laya model is configured automatically on the first call. Call
 semfn.configure(model="my-org/my-laya-model")
 ```
 
+The same functions can use TypeSafe's hosted Jev model without changing their
+definitions:
+
+```bash
+pip install "semfn[jev]"
+export TYPESAFE_API_KEY=...
+```
+
+```python
+semfn.configure(backend="jev")
+```
+
+Pass `model="..."` to select a different model for either backend. Jev receives
+the function arguments as state and uses the same `noul`, `choice`, and `score`
+questions as Laya.
+
 To load the model during application startup and keep the first user request fast:
 
 ```python
