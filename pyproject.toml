@@ -9,3 +9,41 @@ dependencies = ["laya>=0.3.3"]
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.8",
+    "ty>=0.0.83",
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W", "I", "B", "UP", "SIM", "RUF", "ANN", "C4", "PTH", "TC",
+    "N", "A", "ASYNC", "PERF", "PL",
+]
+ignore = [
+    "ANN401",  # the library passes arbitrary user values through, so Any is honest
+    "N818",    # UncertainDecision is a deliberate name, not an "Error"
+    "PLR2004",
+    "PLR0911",
+    "PLR0913",
+    "PLC0415", # heavy imports are deferred on purpose
+]
+
+[tool.ruff.lint.per-file-ignores]
+"examples/**" = ["T201"]
+"tests/**" = ["ANN", "PLR", "TC"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["semfn"]
+
+[tool.ty.environment]
+python-version = "3.13"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
