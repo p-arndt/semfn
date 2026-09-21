@@ -7,11 +7,12 @@ from functools import update_wrapper
 from typing import TYPE_CHECKING, Any, Never, Protocol, get_type_hints, overload
 
 from .decision import Decision, UncertainDecision
+from .evals import Case, Evaluation
 from .runtime import Backend, SemanticRuntime, current_runtime
 from .schema import NONE_LABEL, Schema, choice_schema, plan_for, serialize
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Generator, Mapping
+    from collections.abc import Callable, Generator, Iterable, Mapping
 
 _MISSING: Any = object()
 
@@ -73,6 +74,7 @@ class SemanticFunction[**P, T]:
         self._plan = plan_for(name, hints, self.instructions)
         self._own_runtime = SemanticRuntime(backend) if backend is not None else None
         self._bound_arguments: tuple[Any, ...] = ()
+        self.cases: list[Case] = []
         update_wrapper(self, function)
 
     def __get__(
@@ -91,6 +93,12 @@ class SemanticFunction[**P, T]:
     def result(self, *args: P.args, **kwargs: P.kwargs) -> SemanticCall[Decision[T]]:
         """The full `Decision` with confidence and distribution, once awaited."""
         return SemanticCall(self, self._arguments(*args, **kwargs), True)
+
+    def eval(self, cases: Iterable[Case]) -> Evaluation:
+        """Register labeled cases for `semfn eval`. Await the result to run them."""
+        added = list(cases)
+        self.cases.extend(added)
+        return Evaluation(self, added)
 
     def _arguments(self, *args: Any, **kwargs: Any) -> dict[str, Any]:
         bound = self.signature.bind(*self._bound_arguments, *args, **kwargs)

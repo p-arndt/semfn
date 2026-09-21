@@ -6,6 +6,9 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = ["laya>=0.3.3"]
 
+[project.scripts]
+semfn = "semfn.cli:main"
+
 [project.optional-dependencies]
 jev = ["typesafe-sdk>=0.7,<0.8"]
 

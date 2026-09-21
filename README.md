@@ -99,6 +99,39 @@ with semfn.using(FakeBackend()):
 
 `@semfn.semantic(backend=...)` pins a single function to its own backend.
 
+## Evals
+
+A semantic function is only as good as its answers on your data. Attach labeled
+cases to it and measure:
+
+```python
+same_incident.eval(
+    [
+        semfn.case(error1, error2, expected=True),
+        semfn.case(error1, error3, expected=False),
+    ]
+)
+```
+
+```bash
+semfn eval            # every *.py under evals/
+semfn eval -v path/   # also list the failed cases
+```
+
+```text
+same_incident     91/100
+classify_ticket   96/100
+project_for       73/100  ← below 80%
+```
+
+The exit code is 1 when a function falls below `--min-accuracy` (default 0.8),
+so the command works as a CI gate. `--backend` and `--model` compare backends on
+the same cases. Cases run through the function's confidence policy, so the
+report describes what callers actually get back. `await fn.eval([...])` runs the
+cases in-process and returns an `EvalReport`.
+
+The suites in [`evals`](evals) cover five small applications.
+
 ## Development
 
 ```bash
