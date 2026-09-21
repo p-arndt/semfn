@@ -14,6 +14,7 @@ class Project:
 @semfn.semantic(min_confidence=0.65, uncertain=None)
 def project_for(filename: str, content: str, projects: list[Project]) -> Project | None:
     """Which project is this document most closely related to?"""
+    raise NotImplementedError
 
 
 async def main() -> None:
@@ -33,7 +34,8 @@ async def main() -> None:
         print(f"No confident match ({decision.confidence:.0%})")
     else:
         print(f"{decision.value.name} ({decision.confidence:.0%})")
-        print(decision.distribution)
+        for project, probability in decision.distribution:
+            print(f"  {project.name if project else 'none'}: {probability:.0%}")
 
 
 if __name__ == "__main__":

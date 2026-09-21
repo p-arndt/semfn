@@ -11,7 +11,7 @@ uv run python examples/timing.py
 ```
 
 - `basic.py` shows the smallest possible semantic function and its full `Decision`.
-- `support_triage.py` evaluates three questions in one model pass.
+- `support_triage.py` evaluates three questions in one model pass with `semfn.gather`.
 - `project_routing.py` turns a runtime list into choices and returns the original object.
 - `incident_grouping.py` combines semantic comparison with ordinary application logic.
 - `command_palette.py` selects an executable object while rejecting uncertain matches.

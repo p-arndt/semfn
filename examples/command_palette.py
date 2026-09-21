@@ -16,6 +16,7 @@ class Command:
 @semfn.semantic(min_confidence=0.7, uncertain=None)
 def best_match(query: str, commands: list[Command]) -> Command | None:
     """Which command best satisfies this request?"""
+    raise NotImplementedError
 
 
 async def main() -> None:
